@@ -27,6 +27,7 @@ public class SwiftMobileScannerPlugin: NSObject, FlutterPlugin, FlutterStreamHan
     var position = AVCaptureDevice.Position.back
     
     var scanner = BarcodeScanner.barcodeScanner()
+    private var paused = false
     
     public static func register(with registrar: FlutterPluginRegistrar) {
         let instance = SwiftMobileScannerPlugin(registrar.textures())
@@ -61,6 +62,10 @@ public class SwiftMobileScannerPlugin: NSObject, FlutterPlugin, FlutterStreamHan
             stop(result)
         case "analyzeImage":
             analyzeImage(call, result)
+        case "pause":
+            pause(result)
+        case "resume":
+            resume(result)
         default:
             result(FlutterMethodNotImplemented)
         }
@@ -106,6 +111,9 @@ public class SwiftMobileScannerPlugin: NSObject, FlutterPlugin, FlutterStreamHan
             )
 
             scanner.process(image) { [self] barcodes, error in
+                guard paused else {
+                    return
+                }
                 if error == nil && barcodes != nil {
                     for barcode in barcodes! {
                         let event: [String: Any?] = ["name": "barcode", "data": barcode.data]
@@ -330,6 +338,18 @@ public class SwiftMobileScannerPlugin: NSObject, FlutterPlugin, FlutterStreamHan
         result(nil)
     }
     
+    func pause(_ result: FlutterResult){
+        paused = true
+        result(nil)
+
+    }
+    
+    func resume(_ result: FlutterResult){
+        paused = false
+        result(nil)
+
+    }
+
     // Observer for torch state
     public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         switch keyPath {

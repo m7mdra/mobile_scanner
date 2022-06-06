@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -16,7 +17,7 @@ class _BarcodeScannerWithControllerState
   String? barcode;
 
   MobileScannerController controller = MobileScannerController(
-    torchEnabled: true,
+    torchEnabled: false,
     // formats: [BarcodeFormat.qrCode]
     // facing: CameraFacing.front,
   );
@@ -34,15 +35,18 @@ class _BarcodeScannerWithControllerState
               MobileScanner(
                 controller: controller,
                 fit: BoxFit.contain,
-                // allowDuplicates: true,
+
+                allowDuplicates: true,
                 // controller: MobileScannerController(
                 //   torchEnabled: true,
                 //   facing: CameraFacing.front,
                 // ),
                 onDetect: (barcode, args) {
+                  print(barcode.rawValue);
                   setState(() {
                     this.barcode = barcode.rawValue;
                   });
+
                 },
               ),
               Align(
@@ -88,20 +92,26 @@ class _BarcodeScannerWithControllerState
                             ? const Icon(Icons.stop)
                             : const Icon(Icons.play_arrow),
                         iconSize: 32.0,
-                        onPressed: () => setState(() {
-                          isStarted ? controller.stop() : controller.start();
-                          isStarted = !isStarted;
-                        }),
+                        onPressed: () =>
+                            setState(() {
+                              isStarted ? controller.pause() : controller
+                                  .resume();
+                              isStarted = !isStarted;
+                            }),
                       ),
                       Center(
                         child: SizedBox(
-                          width: MediaQuery.of(context).size.width - 200,
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width - 200,
                           height: 50,
                           child: FittedBox(
                             child: Text(
                               barcode ?? 'Scan something!',
                               overflow: TextOverflow.fade,
-                              style: Theme.of(context)
+                              style: Theme
+                                  .of(context)
                                   .textTheme
                                   .headline4!
                                   .copyWith(color: Colors.white),

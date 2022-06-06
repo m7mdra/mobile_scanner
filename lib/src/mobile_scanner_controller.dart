@@ -208,6 +208,22 @@ class MobileScannerController {
     isStarting = false;
   }
 
+  Future<void> pause() async {
+    try {
+      await methodChannel.invokeMethod('pause');
+    } on PlatformException catch (error) {
+      debugPrint('${error.code}: ${error.message}');
+    }
+  }
+
+  Future<void> resume() async {
+    try {
+      await methodChannel.invokeMethod('resume');
+    } on PlatformException catch (error) {
+      debugPrint('${error.code}: ${error.message}');
+    }
+  }
+
   Future<void> stop() async {
     try {
       await methodChannel.invokeMethod('stop');
