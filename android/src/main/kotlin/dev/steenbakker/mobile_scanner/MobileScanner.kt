@@ -113,7 +113,6 @@ class MobileScanner(private val activity: Activity, private val textureRegistry:
 //            AnalyzeMode.BARCODE -> {
         val mediaImage = imageProxy.image ?: return
         val inputImage = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
-        Log.d(TAG, "analyze: trying to analyze image...")
         analyze(inputImage, imageProxy)
 //            }
 //            else -> imageProxy.close()
@@ -125,7 +124,6 @@ class MobileScanner(private val activity: Activity, private val textureRegistry:
         inputImage: InputImage,
         imageProxy: ImageProxy
     ) {
-        Log.d(TAG, "analyze: trying to analyze image 2...")
 
 
         scanner.process(inputImage)

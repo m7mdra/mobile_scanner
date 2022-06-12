@@ -42,7 +42,6 @@ class _BarcodeScannerWithControllerState
                 //   facing: CameraFacing.front,
                 // ),
                 onDetect: (barcode, args) {
-                  print(barcode.rawValue);
                   setState(() {
                     this.barcode = barcode.rawValue;
                   });
@@ -89,7 +88,7 @@ class _BarcodeScannerWithControllerState
                       IconButton(
                         color: Colors.white,
                         icon: isStarted
-                            ? const Icon(Icons.stop)
+                            ? const Icon(Icons.pause)
                             : const Icon(Icons.play_arrow),
                         iconSize: 32.0,
                         onPressed: () =>
